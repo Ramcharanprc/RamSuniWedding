@@ -218,7 +218,7 @@
                 origin: { y: 0.8 },
                 zIndex: 1057
             });
-            await session.check();
+            //await session.check();
             await animation();
         };
 
