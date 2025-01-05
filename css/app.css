@@ -3,7 +3,8 @@ html {
 }
 
 body {
-    font-family: 'Josefin Sans', sans-serif !important;
+    font-family: Papyrus !important;
+    /*font-family: 'Josefin Sans', sans-serif !important;*/
     padding: 0 !important;
     -ms-overflow-style: none !important;
     scrollbar-width: none !important;
