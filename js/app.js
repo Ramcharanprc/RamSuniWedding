@@ -218,7 +218,7 @@
                 origin: { y: 0.8 },
                 zIndex: 1057
             });
-            await session.check();
+            //await session.check();
             await animation();
         };
 
@@ -382,25 +382,25 @@
 
         let body = document.querySelector('body');
 
-        const login = async () => {
-            await request('POST', '/api/session')
-                .body({
-                    email: body.getAttribute('data-email'),
-                    password: body.getAttribute('data-password')
-                })
-                .then((res) => {
-                    if (res.code == 200) {
-                        localStorage.removeItem('token');
-                        localStorage.setItem('token', res.data.token);
-                        comment.ucapan();
-                    }
-                })
-                .catch((err) => {
-                    alert(`Terdapat kesalahan: ${err}`);
-                    window.location.reload();
-                    return;
-                });
-        };
+        //const login = async () => {
+        //    await request('POST', '/api/session')
+        //        .body({
+        //            email: body.getAttribute('data-email'),
+        //            password: body.getAttribute('data-password')
+        //        })
+        //        .then((res) => {
+        //            if (res.code == 200) {
+        //                localStorage.removeItem('token');
+        //                localStorage.setItem('token', res.data.token);
+        //                comment.ucapan();
+        //            }
+        //        })
+        //        .catch((err) => {
+        //            alert(`Terdapat kesalahan: ${err}`);
+        //            window.location.reload();
+        //            return;
+        //        });
+        //};
 
         const check = async () => {
             const token = localStorage.getItem('token');
@@ -441,40 +441,40 @@
             button.disabled = true;
             info.innerText = 'Loading..';
 
-            if (likes.has(id)) {
-                await request('PATCH', '/api/comment/' + likes.get(id))
-                    .token(token)
-                    .then((res) => {
-                        if (res.data.status) {
-                            likes.unset(id);
+            //if (likes.has(id)) {
+            //    await request('PATCH', '/api/comment/' + likes.get(id))
+            //        .token(token)
+            //        .then((res) => {
+            //            if (res.data.status) {
+            //                likes.unset(id);
 
-                            heart.classList.remove('fa-solid', 'text-danger');
-                            heart.classList.add('fa-regular');
+            //                heart.classList.remove('fa-solid', 'text-danger');
+            //                heart.classList.add('fa-regular');
 
-                            info.setAttribute('data-suka', (parseInt(info.getAttribute('data-suka')) - 1).toString());
-                        }
-                    })
-                    .catch((err) => {
-                        alert(`Terdapat kesalahan: ${err}`);
-                    });
+            //                info.setAttribute('data-suka', (parseInt(info.getAttribute('data-suka')) - 1).toString());
+            //            }
+            //        })
+            //        .catch((err) => {
+            //            alert(`Terdapat kesalahan: ${err}`);
+            //        });
 
-            } else {
-                await request('POST', '/api/comment/' + id)
-                    .token(token)
-                    .then((res) => {
-                        if (res.code == 201) {
-                            likes.set(id, res.data.uuid);
+            //} else {
+            //    await request('POST', '/api/comment/' + id)
+            //        .token(token)
+            //        .then((res) => {
+            //            if (res.code == 201) {
+            //                likes.set(id, res.data.uuid);
 
-                            heart.classList.remove('fa-regular');
-                            heart.classList.add('fa-solid', 'text-danger');
+            //                heart.classList.remove('fa-regular');
+            //                heart.classList.add('fa-solid', 'text-danger');
 
-                            info.setAttribute('data-suka', (parseInt(info.getAttribute('data-suka')) + 1).toString());
-                        }
-                    })
-                    .catch((err) => {
-                        alert(`Terdapat kesalahan: ${err}`);
-                    });
-            }
+            //                info.setAttribute('data-suka', (parseInt(info.getAttribute('data-suka')) + 1).toString());
+            //            }
+            //        })
+            //        .catch((err) => {
+            //            alert(`Terdapat kesalahan: ${err}`);
+            //        });
+            //}
 
             info.innerText = info.getAttribute('data-suka') + ' suka';
             button.disabled = false;
@@ -569,28 +569,28 @@
             buttonKirim.innerHTML = loader;
 
             let isSuccess = false;
-            await request('POST', '/api/comment')
-                .token(token)
-                .body({
-                    nama: nama,
-                    hadir: hadir == 1,
-                    komentar: komentar
-                })
-                .then((res) => {
-                    if (res.code == 201) {
-                        owns.set(res.data.uuid, res.data.own);
-                        isSuccess = true;
-                    }
-                })
-                .catch((err) => {
-                    alert(`Terdapat kesalahan: ${err}`);
-                });
+            //await request('POST', '/api/comment')
+            //    .token(token)
+            //    .body({
+            //        nama: nama,
+            //        hadir: hadir == 1,
+            //        komentar: komentar
+            //    })
+            //    .then((res) => {
+            //        if (res.code == 201) {
+            //            owns.set(res.data.uuid, res.data.own);
+            //            isSuccess = true;
+            //        }
+            //    })
+            //    .catch((err) => {
+            //        alert(`Terdapat kesalahan: ${err}`);
+            //    });
 
-            if (isSuccess) {
-                await pagination.reset();
-                document.getElementById('daftar-ucapan').scrollIntoView({ behavior: 'smooth' });
-                resetForm();
-            }
+            //if (isSuccess) {
+            //    await pagination.reset();
+            //    document.getElementById('daftar-ucapan').scrollIntoView({ behavior: 'smooth' });
+            //    resetForm();
+            //}
 
             buttonKirim.disabled = false;
             buttonKirim.innerHTML = tmp;
@@ -599,61 +599,61 @@
             formPesan.disabled = false;
         };
 
-        const balasan = async (button) => {
-            resetForm();
+        //const balasan = async (button) => {
+        //    resetForm();
 
-            button.disabled = true;
-            let tmp = button.innerText;
-            button.innerText = 'Loading...';
+        //    button.disabled = true;
+        //    let tmp = button.innerText;
+        //    button.innerText = 'Loading...';
 
-            let id = button.getAttribute('data-uuid');
-            let token = localStorage.getItem('token') ?? '';
+        //    let id = button.getAttribute('data-uuid');
+        //    let token = localStorage.getItem('token') ?? '';
 
-            if (token.length == 0) {
-                alert('Terdapat kesalahan, token kosong !');
-                window.location.reload();
-                return;
-            }
+        //    if (token.length == 0) {
+        //        alert('Terdapat kesalahan, token kosong !');
+        //        window.location.reload();
+        //        return;
+        //    }
 
-            document.getElementById('balasan').innerHTML = renderLoading(1);
-            formKehadiran.style.display = 'none';
-            document.getElementById('label-kehadiran').style.display = 'none';
+        //    document.getElementById('balasan').innerHTML = renderLoading(1);
+        //    formKehadiran.style.display = 'none';
+        //    document.getElementById('label-kehadiran').style.display = 'none';
 
-            await request('GET', '/api/comment/' + id)
-                .token(token)
-                .then((res) => {
-                    if (res.code == 200) {
-                        buttonKirim.style.display = 'none';
-                        buttonBatal.style.display = 'block';
-                        buttonBalas.style.display = 'block';
+        //    await request('GET', '/api/comment/' + id)
+        //        .token(token)
+        //        .then((res) => {
+        //            if (res.code == 200) {
+        //                buttonKirim.style.display = 'none';
+        //                buttonBatal.style.display = 'block';
+        //                buttonBalas.style.display = 'block';
 
-                        temporaryID = id;
+        //                temporaryID = id;
 
-                        document.getElementById('balasan').innerHTML = `
-                        <div class="my-3">
-                            <h6>Balasan</h6>
-                            <div id="id-balasan" data-uuid="${id}" class="card-body bg-light shadow p-3 rounded-4">
-                                <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                    <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
-                                        <strong>${util.escapeHtml(res.data.nama)}</strong>
-                                    </p>
-                                    <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${res.data.created_at}</small>
-                                </div>
-                                <hr class="text-dark my-1">
-                                <p class="text-dark m-0 p-0" style="white-space: pre-line">${convertMarkdownToHTML(util.escapeHtml(res.data.komentar))}</p>
-                            </div>
-                        </div>`;
-                    }
-                })
-                .catch((err) => {
-                    resetForm();
-                    alert(`Terdapat kesalahan: ${err}`);
-                });
+        //                document.getElementById('balasan').innerHTML = `
+        //                <div class="my-3">
+        //                    <h6>Balasan</h6>
+        //                    <div id="id-balasan" data-uuid="${id}" class="card-body bg-light shadow p-3 rounded-4">
+        //                        <div class="d-flex flex-wrap justify-content-between align-items-center">
+        //                            <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
+        //                                <strong>${util.escapeHtml(res.data.nama)}</strong>
+        //                            </p>
+        //                            <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${res.data.created_at}</small>
+        //                        </div>
+        //                        <hr class="text-dark my-1">
+        //                        <p class="text-dark m-0 p-0" style="white-space: pre-line">${convertMarkdownToHTML(util.escapeHtml(res.data.komentar))}</p>
+        //                    </div>
+        //                </div>`;
+        //            }
+        //        })
+        //        .catch((err) => {
+        //            resetForm();
+        //            alert(`Terdapat kesalahan: ${err}`);
+        //        });
 
-            document.getElementById('ucapan').scrollIntoView({ behavior: 'smooth' });
-            button.disabled = false;
-            button.innerText = tmp;
-        };
+        //    document.getElementById('ucapan').scrollIntoView({ behavior: 'smooth' });
+        //    button.disabled = false;
+        //    button.innerText = tmp;
+        //};
 
         const innerComment = (data) => {
             return `
@@ -715,32 +715,32 @@
             return DIV;
         };
 
-        const ucapan = async () => {
-            const UCAPAN = document.getElementById('daftar-ucapan');
-            UCAPAN.innerHTML = renderLoading(pagination.getPer());
+        //const ucapan = async () => {
+        //    const UCAPAN = document.getElementById('daftar-ucapan');
+        //    UCAPAN.innerHTML = renderLoading(pagination.getPer());
 
-            let token = localStorage.getItem('token') ?? '';
-            if (token.length == 0) {
-                alert('Terdapat kesalahan, token kosong !');
-                window.location.reload();
-                return;
-            }
+        //    let token = localStorage.getItem('token') ?? '';
+        //    if (token.length == 0) {
+        //        alert('Terdapat kesalahan, token kosong !');
+        //        window.location.reload();
+        //        return;
+        //    }
 
-            await request('GET', `/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`)
-                .token(token)
-                .then((res) => {
-                    if (res.code == 200) {
-                        UCAPAN.innerHTML = null;
-                        res.data.forEach((data) => UCAPAN.appendChild(renderCard(data)));
-                        pagination.setResultData(res.data.length);
+        //    await request('GET', `/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`)
+        //        .token(token)
+        //        .then((res) => {
+        //            if (res.code == 200) {
+        //                UCAPAN.innerHTML = null;
+        //                res.data.forEach((data) => UCAPAN.appendChild(renderCard(data)));
+        //                pagination.setResultData(res.data.length);
 
-                        if (res.data.length == 0) {
-                            UCAPAN.innerHTML = `<div class="h6 text-center">Tidak ada data</div>`;
-                        }
-                    }
-                })
-                .catch((err) => alert(`Terdapat kesalahan: ${err}`));
-        };
+        //                if (res.data.length == 0) {
+        //                    UCAPAN.innerHTML = `<div class="h6 text-center">Tidak ada data</div>`;
+        //                }
+        //            }
+        //        })
+        //        .catch((err) => alert(`Terdapat kesalahan: ${err}`));
+        //};
 
         const renderLoading = (num) => {
             let result = '';
@@ -766,217 +766,217 @@
             return result;
         };
 
-        const balas = async () => {
-            let nama = formNama.value;
-            let komentar = formPesan.value;
-            let token = localStorage.getItem('token') ?? '';
-            let id = document.getElementById('id-balasan').getAttribute('data-uuid');
+        //const balas = async () => {
+        //    let nama = formNama.value;
+        //    let komentar = formPesan.value;
+        //    let token = localStorage.getItem('token') ?? '';
+        //    let id = document.getElementById('id-balasan').getAttribute('data-uuid');
 
-            if (token.length == 0) {
-                alert('Terdapat kesalahan, token kosong !');
-                window.location.reload();
-                return;
-            }
+        //    if (token.length == 0) {
+        //        alert('Terdapat kesalahan, token kosong !');
+        //        window.location.reload();
+        //        return;
+        //    }
 
-            if (nama.length == 0) {
-                alert('nama tidak boleh kosong');
-                return;
-            }
+        //    if (nama.length == 0) {
+        //        alert('nama tidak boleh kosong');
+        //        return;
+        //    }
 
-            if (nama.length >= 35) {
-                alert('panjangan nama maksimal 35');
-                return;
-            }
+        //    if (nama.length >= 35) {
+        //        alert('panjangan nama maksimal 35');
+        //        return;
+        //    }
 
-            if (komentar.length == 0) {
-                alert('pesan tidak boleh kosong');
-                return;
-            }
+        //    if (komentar.length == 0) {
+        //        alert('pesan tidak boleh kosong');
+        //        return;
+        //    }
 
-            formNama.disabled = true;
-            formPesan.disabled = true;
+        //    formNama.disabled = true;
+        //    formPesan.disabled = true;
 
-            buttonBatal.disabled = true;
-            buttonBalas.disabled = true;
-            let tmp = buttonBalas.innerHTML;
-            buttonBalas.innerHTML = loader;
+        //    buttonBatal.disabled = true;
+        //    buttonBalas.disabled = true;
+        //    let tmp = buttonBalas.innerHTML;
+        //    buttonBalas.innerHTML = loader;
 
-            let isSuccess = false;
-            await request('POST', '/api/comment')
-                .token(token)
-                .body({
-                    nama: nama,
-                    id: id,
-                    komentar: komentar
-                })
-                .then((res) => {
-                    if (res.code == 201) {
-                        isSuccess = true;
-                        owns.set(res.data.uuid, res.data.own);
-                    }
-                })
-                .catch((err) => {
-                    alert(`Terdapat kesalahan: ${err}`);
-                });
+        //    let isSuccess = false;
+        //    await request('POST', '/api/comment')
+        //        .token(token)
+        //        .body({
+        //            nama: nama,
+        //            id: id,
+        //            komentar: komentar
+        //        })
+        //        .then((res) => {
+        //            if (res.code == 201) {
+        //                isSuccess = true;
+        //                owns.set(res.data.uuid, res.data.own);
+        //            }
+        //        })
+        //        .catch((err) => {
+        //            alert(`Terdapat kesalahan: ${err}`);
+        //        });
 
-            if (isSuccess) {
-                await ucapan();
-                document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
-                resetForm();
-            }
+        //    if (isSuccess) {
+        //        await ucapan();
+        //        document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
+        //        resetForm();
+        //    }
 
-            buttonBatal.disabled = false;
-            buttonBalas.disabled = false;
-            buttonBalas.innerHTML = tmp;
-            formNama.disabled = false;
-            formPesan.disabled = false;
-        };
+        //    buttonBatal.disabled = false;
+        //    buttonBalas.disabled = false;
+        //    buttonBalas.innerHTML = tmp;
+        //    formNama.disabled = false;
+        //    formPesan.disabled = false;
+        //};
 
-        const ubah = async () => {
-            let token = localStorage.getItem('token') ?? '';
-            let id = buttonUbah.getAttribute('data-uuid');
-            let hadir = formKehadiran.value;
-            let komentar = formPesan.value;
+        //const ubah = async () => {
+        //    let token = localStorage.getItem('token') ?? '';
+        //    let id = buttonUbah.getAttribute('data-uuid');
+        //    let hadir = formKehadiran.value;
+        //    let komentar = formPesan.value;
 
-            if (token.length == 0) {
-                alert('Terdapat kesalahan, token kosong !');
-                window.location.reload();
-                return;
-            }
+        //    if (token.length == 0) {
+        //        alert('Terdapat kesalahan, token kosong !');
+        //        window.location.reload();
+        //        return;
+        //    }
 
-            if (document.getElementById(id).getAttribute('data-parent') === 'true' && hadir == 0) {
-                alert('silahkan pilih kehadiran');
-                return;
-            }
+        //    if (document.getElementById(id).getAttribute('data-parent') === 'true' && hadir == 0) {
+        //        alert('silahkan pilih kehadiran');
+        //        return;
+        //    }
 
-            if (komentar.length == 0) {
-                alert('pesan tidak boleh kosong');
-                return;
-            }
+        //    if (komentar.length == 0) {
+        //        alert('pesan tidak boleh kosong');
+        //        return;
+        //    }
 
-            formKehadiran.disabled = true;
-            formPesan.disabled = true;
+        //    formKehadiran.disabled = true;
+        //    formPesan.disabled = true;
 
-            buttonUbah.disabled = true;
-            buttonBatal.disabled = true;
-            let tmp = buttonUbah.innerHTML;
-            buttonUbah.innerHTML = loader;
+        //    buttonUbah.disabled = true;
+        //    buttonBatal.disabled = true;
+        //    let tmp = buttonUbah.innerHTML;
+        //    buttonUbah.innerHTML = loader;
 
-            let isSuccess = false;
-            await request('PUT', '/api/comment/' + owns.get(id))
-                .body({
-                    hadir: parseInt(hadir) == 1,
-                    komentar: komentar
-                })
-                .token(token)
-                .then((res) => {
-                    if (res.data.status) {
-                        isSuccess = true;
-                    }
-                })
-                .catch((err) => {
-                    alert(`Terdapat kesalahan: ${err}`);
-                });
+        //    let isSuccess = false;
+        //    await request('PUT', '/api/comment/' + owns.get(id))
+        //        .body({
+        //            hadir: parseInt(hadir) == 1,
+        //            komentar: komentar
+        //        })
+        //        .token(token)
+        //        .then((res) => {
+        //            if (res.data.status) {
+        //                isSuccess = true;
+        //            }
+        //        })
+        //        .catch((err) => {
+        //            alert(`Terdapat kesalahan: ${err}`);
+        //        });
 
-            if (isSuccess) {
-                await ucapan();
-                document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
-                resetForm();
-            }
+        //    if (isSuccess) {
+        //        await ucapan();
+        //        document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
+        //        resetForm();
+        //    }
 
-            buttonUbah.innerHTML = tmp;
-            buttonUbah.disabled = false;
-            buttonBatal.disabled = false;
-            formKehadiran.disabled = false;
-            formPesan.disabled = false;
-        };
+        //    buttonUbah.innerHTML = tmp;
+        //    buttonUbah.disabled = false;
+        //    buttonBatal.disabled = false;
+        //    formKehadiran.disabled = false;
+        //    formPesan.disabled = false;
+        //};
 
-        const hapus = async (button) => {
-            if (!confirm('Kamu yakin ingin menghapus?')) {
-                return;
-            }
+        //const hapus = async (button) => {
+        //    if (!confirm('Kamu yakin ingin menghapus?')) {
+        //        return;
+        //    }
 
-            let token = localStorage.getItem('token') ?? '';
-            let id = button.getAttribute('data-uuid');
+        //    let token = localStorage.getItem('token') ?? '';
+        //    let id = button.getAttribute('data-uuid');
 
-            if (token.length == 0) {
-                alert('Terdapat kesalahan, token kosong !');
-                window.location.reload();
-                return;
-            }
+        //    if (token.length == 0) {
+        //        alert('Terdapat kesalahan, token kosong !');
+        //        window.location.reload();
+        //        return;
+        //    }
 
-            resetForm();
+        //    resetForm();
 
-            button.disabled = true;
-            let tmp = button.innerText;
-            button.innerText = 'Loading..';
+        //    button.disabled = true;
+        //    let tmp = button.innerText;
+        //    button.innerText = 'Loading..';
 
-            await request('DELETE', '/api/comment/' + owns.get(id))
-                .token(token)
-                .then((res) => {
-                    if (res.data.status) {
-                        owns.unset(id);
-                        document.getElementById(id).remove();
-                    }
-                })
-                .catch((err) => {
-                    alert(`Terdapat kesalahan: ${err}`);
-                });
+        //    await request('DELETE', '/api/comment/' + owns.get(id))
+        //        .token(token)
+        //        .then((res) => {
+        //            if (res.data.status) {
+        //                owns.unset(id);
+        //                document.getElementById(id).remove();
+        //            }
+        //        })
+        //        .catch((err) => {
+        //            alert(`Terdapat kesalahan: ${err}`);
+        //        });
 
-            button.innerText = tmp;
-            button.disabled = false;
-        };
+        //    button.innerText = tmp;
+        //    button.disabled = false;
+        //};
 
-        const edit = async (button) => {
-            resetForm();
+        //const edit = async (button) => {
+        //    resetForm();
 
-            button.disabled = true;
-            let tmp = button.innerText;
-            button.innerText = 'Loading...';
+        //    button.disabled = true;
+        //    let tmp = button.innerText;
+        //    button.innerText = 'Loading...';
 
-            let id = button.getAttribute('data-uuid').toString();
-            let token = localStorage.getItem('token') ?? '';
+        //    let id = button.getAttribute('data-uuid').toString();
+        //    let token = localStorage.getItem('token') ?? '';
 
-            if (token.length == 0) {
-                alert('Terdapat kesalahan, token kosong !');
-                window.location.reload();
-                return;
-            }
+        //    if (token.length == 0) {
+        //        alert('Terdapat kesalahan, token kosong !');
+        //        window.location.reload();
+        //        return;
+        //    }
 
-            await request('GET', '/api/comment/' + id)
-                .token(token)
-                .then((res) => {
-                    if (res.code == 200) {
-                        temporaryID = id;
+        //    await request('GET', '/api/comment/' + id)
+        //        .token(token)
+        //        .then((res) => {
+        //            if (res.code == 200) {
+        //                temporaryID = id;
 
-                        buttonBatal.style.display = 'block';
-                        buttonUbah.style.display = 'block';
-                        buttonKirim.style.display = 'none';
-                        buttonUbah.setAttribute('data-uuid', id);
+        //                buttonBatal.style.display = 'block';
+        //                buttonUbah.style.display = 'block';
+        //                buttonKirim.style.display = 'none';
+        //                buttonUbah.setAttribute('data-uuid', id);
 
-                        formPesan.value = res.data.komentar;
-                        formNama.value = res.data.nama;
-                        formNama.disabled = true;
+        //                formPesan.value = res.data.komentar;
+        //                formNama.value = res.data.nama;
+        //                formNama.disabled = true;
 
-                        if (document.getElementById(id).getAttribute('data-parent') !== 'true') {
-                            document.getElementById('label-kehadiran').style.display = 'none';
-                            formKehadiran.style.display = 'none';
-                        } else {
-                            formKehadiran.value = res.data.hadir ? 1 : 2;
-                            document.getElementById('label-kehadiran').style.display = 'block';
-                            formKehadiran.style.display = 'block';
-                        }
+        //                if (document.getElementById(id).getAttribute('data-parent') !== 'true') {
+        //                    document.getElementById('label-kehadiran').style.display = 'none';
+        //                    formKehadiran.style.display = 'none';
+        //                } else {
+        //                    formKehadiran.value = res.data.hadir ? 1 : 2;
+        //                    document.getElementById('label-kehadiran').style.display = 'block';
+        //                    formKehadiran.style.display = 'block';
+        //                }
 
-                        document.getElementById('ucapan').scrollIntoView({ behavior: 'smooth' });
-                    }
-                })
-                .catch((err) => {
-                    alert(`Terdapat kesalahan: ${err}`);
-                });
+        //                document.getElementById('ucapan').scrollIntoView({ behavior: 'smooth' });
+        //            }
+        //        })
+        //        .catch((err) => {
+        //            alert(`Terdapat kesalahan: ${err}`);
+        //        });
 
-            button.disabled = false;
-            button.innerText = tmp;
-        };
+        //    button.disabled = false;
+        //    button.innerText = tmp;
+        //};
 
         const batal = () => {
             if (temporaryID) {
